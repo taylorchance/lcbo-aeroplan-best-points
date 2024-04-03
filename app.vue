@@ -101,21 +101,18 @@ const facets = [
   },
 ]
 
-var body = {
-  // "searchHub": "" ? "Rec - SearchBox - Products": "Web_Main_Search_EN",
-  // tab: "Products",
-  cq: '(@source==ProductsEN @ec_visibility==(2,4) @cp_browsing_category_deny<>0 @ec_category==Products) NOT @enabled==false',
-  facets: facets,
-  numberOfResults: 9999,
-  excerptLength: 200
-}
-const { data } = await useFetch('https://platform.cloud.coveo.com/rest/search/v2', {
+const { data, pending } = await useFetch('https://platform.cloud.coveo.com/rest/search/v2', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + 'xx883b5583-07fb-416b-874b-77cce565d927'
   },
-  body: JSON.stringify(body)
+  body: JSON.stringify({
+    cq: '(@source==ProductsEN @ec_visibility==(2,4) @cp_browsing_category_deny<>0 @ec_category==Products) NOT @enabled==false',
+    facets: facets,
+    numberOfResults: 9999,
+    excerptLength: 200
+  })
 })
 
 const { results } = data.value
@@ -160,23 +157,30 @@ const formatCategories = (categories) => {
 const filters = Object.entries(
   results.reduce((acc, product) => {
     const keywords = formatCategories(product.raw.ec_category_filter[0])
-    keywords.forEach(keyword => {
+    keywords.forEach(keyword => {      
       acc[keyword] = (acc[keyword] || 0) + 1
     })
     return acc
-  }, [])
-)
-.sort((a, b) => b[1] - a[1])
-.map(entry => entry[0])
+  }, []))
+  .filter(entry => entry[1] > 2)
+  .sort((a, b) => b[1] - a[1])
+  .map(entry => entry[0])
 
-console.log('filters', filters)
-
-
+const formatDate = (string) => {
+  const date = new Date(string)
+  const formattedDate = `${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}`
+  return formattedDate
+}
 </script>
 
 <template>
   <section class="section">
-    <div class="container">
+
+    <h1 v-if="pending"class="title">
+      pending
+    </h1>
+
+    <div v-else class="container">
       <h1 class="title">
         LCBO Aeroplan Scraper
       </h1>
@@ -184,12 +188,17 @@ console.log('filters', filters)
       <div class="tags">
         <span
           v-for="filter in filters"
-          :key="filter"class="tag is-clickable"
-          @click="currentFilter = filter"
+          :key="filter"
+          :class="`tag is-clickable ${currentFilter === filter && 'is-black'}`"
+          @click="currentFilter = currentFilter === filter ? null : filter"
         >
           {{ filter }}
         </span>
       </div>
+
+      <button v-if="currentFilter" class="button" @click="currentFilter = null">
+        Clear filter
+      </button>
 
       <div class="table-container">
         <table class="table is-fullwidth is-striped">
@@ -221,11 +230,11 @@ console.log('filters', filters)
             <tr v-for="product in sortedResults" :key="product.uniqueId">
               <td>
                 <div class="is-flex">
-                  <figure class="image is-64x64">
+                  <figure class="image is-96x96">
                     <img :src="product.raw.ec_thumbnails" />
                   </figure>
                   <div>
-                    <h2>{{ product.title }}</h2>
+                    <h2 class="subtitle">{{ product.title }}</h2>
                     <a :href="product.ClickUri" target="_blank">View LCBO product</a>
                   </div>
                 </div>
@@ -245,9 +254,9 @@ console.log('filters', filters)
               <td>
                 ${{ product.raw.ec_price }}
               </td>
-              <td>
+              <td style="white-space: nowrap;">
                 {{ product.raw.loyalty_points }}
-                <p>Valid until {{ new Date(product.raw.loyalty_enddate) }}</p>
+                <p>valid until {{ formatDate(product.raw.loyalty_enddate) }}</p>
               </td>
               <td>
                 {{ Math.round(product.raw.loyalty_points / product.raw.ec_price * 100) / 100 }}
@@ -260,13 +269,27 @@ console.log('filters', filters)
   </section>
 </template>
 
-<style scoped>
+<style>
+/* body, #__nuxt {
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+  font-variant-ligatures: none;
+  -webkit-font-variant-ligatures: none;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  font-family: Archivo Variable, sans-serif !important;
+  font-size: 18px;
+  overflow: hidden;
+} */
+
 th {
   white-space: nowrap;
 }
 
-.tags {
+/* .tags {
   flex-wrap: nowrap;
   overflow: scroll;
-}
+} */
 </style>
