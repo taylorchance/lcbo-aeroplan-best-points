@@ -18,8 +18,8 @@ const sortedProducts = computed(() => {
       aVal = a.points / a.price
       bVal = b.points / b.price
     } else if (sortBy.value === 'price') {
-      aVal = a.raw.ec_price
-      bVal = b.raw.ec_price
+      aVal = a.price
+      bVal = b.price
     } else if (sortBy.value === 'aeroplanPoints') {
       aVal = a.points
       bVal = b.points
@@ -49,7 +49,10 @@ const formatDate = (string) => {
 </script>
 
 <template>
-  <section class="section">
+
+  <div class="top-banner-ae"></div>
+  
+  <section class="ae-content">
     <div v-if="pending" class="hero is-fullheight">
       <div class="hero-body is-justify-content-center">
         <div class="loader is-loading is-size-1"></div>
@@ -66,11 +69,11 @@ const formatDate = (string) => {
         </button>
       </div>
 
-      <div class="tags">
+      <div class="tags is-hidden-touch">
         <span
           v-for="filter in filters"
           :key="filter"
-          :class="`tag is-clickable ${currentFilter === filter ? 'is-black' : ''}`"
+          :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
           @click="currentFilter = currentFilter === filter ? null : filter"
         >
           {{ filter }}
@@ -86,19 +89,22 @@ const formatDate = (string) => {
               <th class="is-clickable" @click="sortBy === 'price' ? sortDesc = !sortDesc : sortBy = 'price'">
                 Price
                 <span v-if="sortBy === 'price'" class="icon">
-                  <i :class="`fa-solid fa-chevron-${sortDesc ? 'up' : 'down'}`"></i>
+                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
+                  <img v-else src="/assets/images/chevron-up.svg" />
                 </span>
               </th>
               <th class="is-clickable" @click="sortBy === 'aeroplanPoints' ? sortDesc = !sortDesc : sortBy = 'aeroplanPoints'">
-                Aeroplan points
+                Points
                 <span v-if="sortBy === 'aeroplanPoints'" class="icon">
-                  <i :class="`fa-solid fa-chevron-${sortDesc ? 'up' : 'down'}`"></i>
+                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
+                  <img v-else src="/assets/images/chevron-up.svg" />
                 </span>
               </th>
               <th class="is-clickable" @click="sortBy === 'pointsPerDollar' ? sortDesc = !sortDesc : sortBy = 'pointsPerDollar'">
-                Points/$
+                Ratio
                 <span v-if="sortBy === 'pointsPerDollar'" class="icon">
-                  <i :class="`fa-solid fa-chevron-${sortDesc ? 'up' : 'down'}`"></i>
+                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
+                  <img v-else src="/assets/images/chevron-up.svg" />
                 </span>
               </th>
             </tr>
@@ -112,7 +118,7 @@ const formatDate = (string) => {
                   </figure>
                   <div>
                     <h2 class="subtitle">{{ product.title }}</h2>
-                    <a :href="product.url" target="_blank">View LCBO product</a>
+                    <a :href="product.url" target="_blank" class="help">View LCBO product</a>
                   </div>
                 </div>
               </td>
@@ -121,7 +127,7 @@ const formatDate = (string) => {
                   <span
                     v-for="filter in product.categories"
                     :key="filter"
-                    class="tag is-clickable"
+                    :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
                     @click="currentFilter = filter"
                   >
                     {{ filter }}
@@ -133,11 +139,12 @@ const formatDate = (string) => {
                 ${{ product.price }}
               </td>
               <td style="white-space: nowrap;">
-                {{ product.points }}
-                <p>valid until {{ formatDate(product.endDate) }}</p>
+                <span>{{ product.points }}</span>
+                <span class="pts">pts</span>
+                <p class="help">valid until {{ formatDate(product.endDate) }}</p>
               </td>
-              <td>
-                {{ Math.round(product.points / product.price * 100) / 100 }}
+              <td style="white-space: nowrap;">
+                {{ Math.round(product.points / product.price * 100) / 100 }}<span class="pts">pts / $</span>
               </td>
             </tr>
           </tbody>
@@ -148,7 +155,7 @@ const formatDate = (string) => {
 </template>
 
 <style>
-/* body, #__nuxt {
+body, #__nuxt {
   min-height: 100vh;
   -webkit-text-size-adjust: 100%;
   font-variant-ligatures: none;
@@ -157,17 +164,112 @@ const formatDate = (string) => {
   -moz-osx-font-smoothing: grayscale;
   font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
-  font-family: Archivo Variable, sans-serif !important;
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   overflow: hidden;
-} */
-
-th {
-  white-space: nowrap;
 }
 
-/* .tags {
-  flex-wrap: nowrap;
-  overflow: scroll;
-} */
+.top-banner-ae {
+  background: url('https://www.aircanada.com/content/dam/aircanada/loyalty-content/images/hero-aeroplan.png') center center;
+  background-repeat: no-repeat;
+  height: 500px;
+  background-size: cover;
+  margin-top: -100px;
+}
+
+.ae-content {
+  background: #fff;
+  padding: 4em;
+  position: relative;
+  margin: 0px auto;
+  margin-top: -200px;
+  width: calc(100% - 60px);
+}
+
+@media only screen and (max-width: 1023px) {
+  .ae-content {
+    width: calc(100% - 30px);
+    padding: 4em 2em;
+    padding: 30px;
+  }
+
+  .table-container {
+    margin-inline: -45px;
+    max-width: 100vw;
+    width: 100vw;
+  }
+}
+
+.title {
+  font: normal 300 36px Open Sans;
+  color: #000;
+}
+
+.subtitle, th {
+  font: normal 400 20px Open Sans;
+  color: #000;
+  margin-bottom: 0 !important;
+}
+
+.table th {
+  white-space: nowrap;
+  font-size: 18px;
+}
+
+.table th .icon {
+  width: 18px;
+  padding-left: 5px;
+  position: absolute;
+}
+
+.table td {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 150px;
+}
+
+.table td:not(:first-child) {
+  padding-top: 1rem;
+}
+
+.help {
+  color: #5f5f5f;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+span.pts {
+  font-weight: 400;
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+.image img {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.tag {
+  border-radius: 0;
+  font-weight: 400;
+}
+
+.tag.is-primary {
+  background: #005078;
+  color: #fff;
+}
+
+.button {
+  background: #005078;
+  color: #fff;
+  border-radius: 0;
+  border: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  padding: 12px 30px;
+  text-decoration: underline;
+}
 </style>
