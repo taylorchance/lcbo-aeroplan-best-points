@@ -234,6 +234,15 @@ body, #__nuxt {
   overflow: hidden;
 }
 
+/* darkmode overrides */
+body, #__nuxt, .select select {
+  background-color: #fff;
+}
+
+.label {
+  color: rgb(46, 51, 61);
+}
+
 .top-banner-ae {
   background: url('https://www.aircanada.com/content/dam/aircanada/loyalty-content/images/hero-aeroplan.png') center center;
   background-repeat: no-repeat;
