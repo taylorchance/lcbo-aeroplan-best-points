@@ -1,4 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// google stream_id = '7811025791'
+// google measurement id = G-VPSEDVDH2C
+const GOOGLE_ANALYTICS_ID = 'G-VPSEDVDH2C'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -10,5 +15,16 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/bulma.css'],
+  modules: [
+    '@nuxtjs/google-analytics'
+  ],
+  googleAnalytics: {
+    id: GOOGLE_ANALYTICS_ID,
+  },
+  publicRuntimeConfig: {
+    googleAnalytics: {
+      id: GOOGLE_ANALYTICS_ID
+    }
+  },
   devtools: { enabled: true },
 })
