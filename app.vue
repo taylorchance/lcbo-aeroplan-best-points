@@ -239,12 +239,16 @@ body, #__nuxt, .select select, .table {
   color: rgb(46, 51, 61);
 }
 
-.label {
+.table td, .label, .tag {
   color: rgb(46, 51, 61);
 }
 
 .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
   background-color: rgb(249, 250, 250);
+}
+
+.tag {
+  background-color: rgb(243, 244, 246)
 }
 
 
