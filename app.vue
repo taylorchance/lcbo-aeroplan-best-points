@@ -60,24 +60,68 @@ const formatDate = (string) => {
     </div>
 
     <div v-else-if="data" class="container">
+      <h1 class="title mb-0">
+        LCBO Aeroplan Points Maximizer
+      </h1>
+        
       <div class="level">
-        <h1 class="title mb-0">
-          LCBO Aeroplan Points Maximizer
-        </h1>
+        <div class="field">
+          <label class="label">Filters</label>
+          <div class="control">
+            <div class="select">
+              <select v-model="currentFilter" >
+                <option :value="null">Select filter</option>
+                <option
+                  v-for="filter in filters"
+                  :key="filter"
+                  :value="filter"
+                >
+                  {{ filter }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-hidden-tablet">
+          <label class="label">Sort by</label>
+          <div class="control">
+            <div class="select">
+              <select v-model="sortBy">
+                <option>Select sort</option>
+                <option value="price">
+                  Price
+                </option>
+                <option value="aeroplanPoints">
+                  Points
+                </option>
+                <option value="pointsPerDollar">
+                  Ratio
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-hidden-tablet">
+          <label class="label">Sort order</label>
+          <div class="control">
+            <div class="select">
+              <select v-model="sortDesc">
+                <option :value="true">
+                  Descending
+                </option>
+                <option :value="false">
+                  Ascending
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <button v-if="currentFilter" class="button" @click="currentFilter = null">
           Clear filter
         </button>
-      </div>
-
-      <div class="tags is-hidden-touch">
-        <span
-          v-for="filter in filters"
-          :key="filter"
-          :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
-          @click="currentFilter = currentFilter === filter ? null : filter"
-        >
-          {{ filter }}
-        </span>
       </div>
 
       <div class="table-container">
@@ -112,13 +156,34 @@ const formatDate = (string) => {
           <tbody>
             <tr v-for="product in sortedProducts" :key="product.id">
               <td>
-                <div class="is-flex">
+                <div class="is-flex is-relative is-align-items-center">
                   <figure class="image is-96x96">
                     <img :src="product.image" />
                   </figure>
                   <div>
                     <h2 class="subtitle">{{ product.title }}</h2>
                     <a :href="product.url" target="_blank" class="help">View LCBO product</a>
+
+                    <div class="level is-mobile is-hidden-tablet is-size-4 mb-0">
+                      <p>${{ product.price }}</p>
+                      <p>
+                        <span>{{ product.points }}</span>
+                        <span class="pts">pts</span>
+                      </p>
+                      <p>
+                        {{ Math.round(product.points / product.price * 100) / 100 }}<span class="pts">pts / $</span>
+                      </p>
+                    </div>
+                    <div class="tags is-hidden-tablet">
+                      <span
+                        v-for="filter in product.categories"
+                        :key="filter"
+                        :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
+                        @click="currentFilter = filter"
+                      >
+                        {{ filter }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -184,20 +249,6 @@ body, #__nuxt {
   margin: 0px auto;
   margin-top: -200px;
   width: calc(100% - 60px);
-}
-
-@media only screen and (max-width: 1023px) {
-  .ae-content {
-    width: calc(100% - 30px);
-    padding: 4em 2em;
-    padding: 30px;
-  }
-
-  .table-container {
-    margin-inline: -45px;
-    max-width: 100vw;
-    width: 100vw;
-  }
 }
 
 .title {
@@ -271,5 +322,38 @@ span.pts {
   letter-spacing: 0.25px;
   padding: 12px 30px;
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 1023px) {
+  .ae-content {
+    width: calc(100% - 30px);
+    padding: 4em 2em;
+    padding: 30px;
+  }
+
+  .table-container {
+    margin-inline: -45px;
+    max-width: 100vw;
+    width: 100vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table td {
+    max-width: none;
+    border: 0;
+  }
+
+  .table tbody tr td:nth-child(n+2) {
+    display: none;
+  }
+
+  .field, .select, select {
+    width: 100%;
+  }
 }
 </style>
