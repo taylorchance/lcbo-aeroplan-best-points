@@ -134,24 +134,34 @@ const superProduct = ref(null)
           <div class="list-item-content">
             <h3 class="list-item-title">{{ product.title }}</h3>
             
-            <div class="is-flex my-1">
-            <!-- <div class="level mb-0 is-justify-content-flex-start"> -->
+            <!-- <div class="is-flex my-1"> -->
+            <div class="level mb-0 is-justify-content-flex-start is-align-items-flex-start" style="gap: 0;">
               <p class="list-item-description">
-              ${{ product.price }}
+                ${{ product.price }}
               </p>
-              <span class="has-text-weight-light">&nbsp;/&nbsp;{{ product.points }}</span>
-              <span class="pts">pts</span>
+              <p class="has-text-weight-light">
+                <span class="is-hidden-mobile">&nbsp;/&nbsp;</span>{{ product.points }}
+                <span class="pts">pts</span>
+                <span class="is-hidden-mobile">&nbsp;/&nbsp;</span>
+              </p>
 
-              <div class="is-flex is-clickable" @click="superProduct = product">
+              <p class="has-text-weight-light has-text-success is-flex is-clickable" @click="superProduct = product">
+                {{ Math.floor(product.points + (product.price * 5) + (product.price / 4)) }}
+                <div class="has-text-success is-size-7 has-text-weight-light ml-1" style="line-height: 10px; margin: 1px;">
+                  <p>super pts</p>
+                  <p class="has-text-weight-bold">learn more</p>
+                </div>
+              </p>
+
+              <!-- <div class="is-flex is-clickable" @click="superProduct = product">
                 <span class="has-text-success">
-                  &nbsp;/&nbsp;
                   {{ Math.floor(product.points + (product.price * 5) + (product.price / 4)) }}
                 </span>
                 <div class="has-text-success is-size-7 has-text-weight-light ml-1" style="line-height: 10px; margin: 1px;">
                   <p>super pts</p>
                   <p class="has-text-weight-bold">learn more</p>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <a :href="product.url" target="_blank" class="has-text-dark is-size-6">View LCBO product</a>
@@ -173,17 +183,32 @@ const superProduct = ref(null)
   <div v-if="superProduct" class="modal is-active">
     <div class="modal-background" @click="superProduct = null"></div>
     <div class="modal-content">
-      <div class="box">
+
+
+      <div v-if="superProduct === 2" class="box">
         <h3 class="title">
           How to Earn Super&nbsp;Points
         </h3>
         <p>
-          Thats right, if you follow the secret hack, you could earn {{ Math.floor(superProduct.points + (superProduct.price * 5) + (superProduct.price / 4)) }} points of just the single purchase of {{ superProduct.title }}!
+          The Amex Cobalt card is by far the best credit card in Canada to earn Aeroplan points on. You get a whopping 5 points per dollar spent at certain places. Amex points can easily be converted to Aeroplan points at a 1:1 ratio. While LCBO only gives you 1 Amex point /$ spent, if you go to a grocery store and buy an LCBO gift card, you would be earning the equivalent of 5 points / $ spent.
         </p>
 
-        <!-- <button class="button is-black is-outlined mt-5" @click="superProduct = null">
-          Got it
-        </button> -->
+        <a href="https://americanexpress.com/en-ca/referral/cobalt?ref=tAYLOCQrrH" target="_blank" class="button mt-5">
+          Get Amex Cobalt Card
+        </a>
+      </div>
+
+      <div v-else class="box">
+        <h3 class="title">
+          How to Earn Super&nbsp;Points
+        </h3>
+        <p>
+          Thats right, if you follow this secret hack, you could earn {{ Math.floor(superProduct.points + (superProduct.price * 5) + (superProduct.price / 4)) }} points of just the single purchase of 1 {{ superProduct.title }}!
+        </p>
+
+        <button class="button mt-5" @click="superProduct = 2">
+          Watch 15s video to learn more
+        </button>
       </div>
     </div>
   </div>
@@ -234,8 +259,9 @@ body, #__nuxt, .select select {
 }
 
 .title {
-  font: normal 300 36px Open Sans;
   color: #000;
+  font: normal 300 36px Open Sans;
+  line-height: 1;
 }
 
 
@@ -274,7 +300,7 @@ span.pts {
   text-decoration: underline;
 }
 
-.box {
+.modal-content {
   max-width: 80vw;
   margin: auto;
 }
