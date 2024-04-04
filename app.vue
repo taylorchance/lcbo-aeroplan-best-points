@@ -44,10 +44,11 @@ const formatDate = (string) => {
   const formattedDate = `${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}`
   return formattedDate
 }
+
+const superProduct = ref(null)
 </script>
 
 <template>
-
   <div class="top-banner-ae"></div>
   
   <section class="ae-content">
@@ -132,11 +133,27 @@ const formatDate = (string) => {
 
           <div class="list-item-content">
             <h3 class="list-item-title">{{ product.title }}</h3>
-            <p class="list-item-description">
+            
+            <div class="is-flex my-1">
+            <!-- <div class="level mb-0 is-justify-content-flex-start"> -->
+              <p class="list-item-description">
               ${{ product.price }}
-              <span class="has-text-weight-light"> / {{ product.points }}</span>
+              </p>
+              <span class="has-text-weight-light">&nbsp;/&nbsp;{{ product.points }}</span>
               <span class="pts">pts</span>
-            </p>
+
+              <div class="is-flex is-clickable" @click="superProduct = product">
+                <span class="has-text-success">
+                  &nbsp;/&nbsp;
+                  {{ Math.floor(product.points + (product.price * 5) + (product.price / 4)) }}
+                </span>
+                <div class="has-text-success is-size-7 has-text-weight-light ml-1" style="line-height: 10px; margin: 1px;">
+                  <p>super pts</p>
+                  <p class="has-text-weight-bold">learn more</p>
+                </div>
+              </div>
+            </div>
+
             <a :href="product.url" target="_blank" class="has-text-dark is-size-6">View LCBO product</a>
           </div>
 
@@ -152,6 +169,24 @@ const formatDate = (string) => {
 
     </div>
   </section>
+
+  <div v-if="superProduct" class="modal is-active">
+    <div class="modal-background" @click="superProduct = null"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h3 class="title">
+          How to Earn Super&nbsp;Points
+        </h3>
+        <p>
+          Thats right, if you follow the secret hack, you could earn {{ Math.floor(superProduct.points + (superProduct.price * 5) + (superProduct.price / 4)) }} points of just the single purchase of {{ superProduct.title }}!
+        </p>
+
+        <!-- <button class="button is-black is-outlined mt-5" @click="superProduct = null">
+          Got it
+        </button> -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
@@ -237,6 +272,11 @@ span.pts {
   letter-spacing: 0.25px;
   padding: 12px 30px;
   text-decoration: underline;
+}
+
+.box {
+  max-width: 80vw;
+  margin: auto;
 }
 
 @media only screen and (max-width: 1023px) {

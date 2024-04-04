@@ -73,7 +73,7 @@
 }
 .list-item-description {
   color: #000;
-  margin: .25rem 0;
+  /* margin: .25rem 0; */
   font-weight: 600;
 }
 .list-item-controls {
