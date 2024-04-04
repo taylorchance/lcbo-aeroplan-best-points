@@ -1,6 +1,5 @@
 <script setup>
 const { data, pending } = await useFetch('/api/products')
-console.log('data.value', data.value)
 
 const sortBy = ref('pointsPerDollar')
 const sortDesc = ref(false)

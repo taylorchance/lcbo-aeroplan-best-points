@@ -7,10 +7,6 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      script: [
-        { src: 'https://www.googletagmanager.com/gtag/js?id=G-GHD0MMW7FD', async: true },
-        { src: 'js/ga.js' }
-    ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
@@ -19,16 +15,11 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/bulma.css'],
-  // modules: [
-  //   '@nuxtjs/google-analytics'
-  // ],
-  // googleAnalytics: {
-  //   id: GOOGLE_ANALYTICS_ID,
-  // },
-  // publicRuntimeConfig: {
-  //   googleAnalytics: {
-  //     id: GOOGLE_ANALYTICS_ID
-  //   }
-  // },
+
+  runtimeConfig: {
+    public: {
+      gtagId: 'G-GHD0MMW7FD',
+    }
+  },
   devtools: { enabled: true },
 })
