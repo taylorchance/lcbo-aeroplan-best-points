@@ -239,7 +239,7 @@ body, #__nuxt, .select select, .table {
   color: rgb(46, 51, 61);
 }
 
-.table td, .label, .tag {
+.table th, .table td, .label, .tag {
   color: rgb(46, 51, 61);
 }
 
