@@ -2,7 +2,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { gtagId } = useRuntimeConfig().public
   
   function gtag() {
-    console.log('hello from gta.client !')
     window.dataLayer.push(arguments)
   }
   

@@ -1,9 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-// google stream_id = '7813857982'
-// google measurement id = G-GHD0MMW7FD
-// const GOOGLE_ANALYTICS_ID = 'G-GHD0MMW7FD'
-
 export default defineNuxtConfig({
   app: {
     head: {
@@ -18,7 +14,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      gtagId: 'G-GHD0MMW7FD',
+      gtagId: process.env.GOOGLE_ANALYTICS_ID,
     }
   },
   devtools: { enabled: true },
