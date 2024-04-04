@@ -81,7 +81,7 @@ const formatDate = (string) => {
           </div>
         </div>
 
-        <div class="field is-hidden-tablet">
+        <div class="field">
           <label class="label">Sort by</label>
           <div class="control">
             <div class="select">
@@ -101,7 +101,7 @@ const formatDate = (string) => {
           </div>
         </div>
 
-        <div class="field is-hidden-tablet">
+        <div class="field">
           <label class="label">Sort order</label>
           <div class="control">
             <div class="select">
@@ -122,97 +122,34 @@ const formatDate = (string) => {
         </button>
       </div>
 
-      <div class="table-container">
-        <table class="table is-fullwidth is-striped">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Category</th>
-              <th class="is-clickable" @click="sortBy === 'price' ? sortDesc = !sortDesc : sortBy = 'price'">
-                Price
-                <span v-if="sortBy === 'price'" class="icon">
-                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
-                  <img v-else src="/assets/images/chevron-up.svg" />
-                </span>
-              </th>
-              <th class="is-clickable" @click="sortBy === 'aeroplanPoints' ? sortDesc = !sortDesc : sortBy = 'aeroplanPoints'">
-                Points
-                <span v-if="sortBy === 'aeroplanPoints'" class="icon">
-                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
-                  <img v-else src="/assets/images/chevron-up.svg" />
-                </span>
-              </th>
-              <th class="is-clickable" @click="sortBy === 'pointsPerDollar' ? sortDesc = !sortDesc : sortBy = 'pointsPerDollar'">
-                Ratio
-                <span v-if="sortBy === 'pointsPerDollar'" class="icon">
-                  <img v-if="sortDesc" src="/assets/images/chevron-down.svg" />
-                  <img v-else src="/assets/images/chevron-up.svg" />
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="product in sortedProducts" :key="product.id">
-              <td>
-                <div class="is-flex is-relative is-align-items-center">
-                  <figure class="image is-96x96">
-                    <img :src="product.image" />
-                  </figure>
-                  <div>
-                    <h2 class="subtitle">{{ product.title }}</h2>
-                    <a :href="product.url" target="_blank" class="help">View LCBO product</a>
+      <div class="list has-visible-pointer-controls has-hoverable-list-items has-overflow-ellipsis">
+        <div v-for="product in sortedProducts" :key="product.id" class="list-item">
+          <div class="list-item-image">
+            <figure class="image is-64x64">
+              <img class="is-rounded" :src="product.image">
+            </figure>
+          </div>
 
-                    <div class="level is-mobile is-hidden-tablet is-size-4 mb-0">
-                      <p>${{ product.price }}</p>
-                      <p>
-                        <span>{{ product.points }}</span>
-                        <span class="pts">pts</span>
-                      </p>
-                      <p>
-                        {{ Math.round(product.points / product.price * 100) / 100 }}<span class="pts">pts / $</span>
-                      </p>
-                    </div>
-                    <div class="tags is-hidden-tablet">
-                      <span
-                        v-for="filter in product.categories"
-                        :key="filter"
-                        :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
-                        @click="currentFilter = filter"
-                      >
-                        {{ filter }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="tags">
-                  <span
-                    v-for="filter in product.categories"
-                    :key="filter"
-                    :class="`tag is-clickable ${currentFilter === filter ? 'is-primary' : ''}`"
-                    @click="currentFilter = filter"
-                  >
-                    {{ filter }}
-                  </span>
-                </div>
+          <div class="list-item-content">
+            <h3 class="list-item-title">{{ product.title }}</h3>
+            <p class="list-item-description">
+              ${{ product.price }}
+              <span class="has-text-weight-light"> / {{ product.points }}</span>
+              <span class="pts">pts</span>
+            </p>
+            <a :href="product.url" target="_blank" class="has-text-dark is-size-6">View LCBO product</a>
+          </div>
 
-              </td>
-              <td>
-                ${{ product.price }}
-              </td>
-              <td style="white-space: nowrap;">
-                <span>{{ product.points }}</span>
-                <span class="pts">pts</span>
-                <p class="help">valid until {{ formatDate(product.endDate) }}</p>
-              </td>
-              <td style="white-space: nowrap;">
-                {{ Math.round(product.points / product.price * 100) / 100 }}<span class="pts">pts / $</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <div class="list-item-controls has-text-centered">
+            <h3 class="title mb-0">
+              <span style="letter-spacing: -3px;">{{ Math.round(product.points / product.price * 100) / 100 }}</span>
+              <span class="pts">pts / <span style="font-weight: 600;">$</span></span>
+            </h3>
+            <p class="help">expires {{ formatDate(product.endDate) }}</p>
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
 </template>
@@ -251,13 +188,14 @@ body, #__nuxt, .select select, .table {
 }
 
 
-
 .top-banner-ae {
-  background: url('https://www.aircanada.com/content/dam/aircanada/loyalty-content/images/hero-aeroplan.png') center center;
+  background-image: url('https://www.lcbo.com/content/dam/lcbo/corporate-pages/about/media-centre/corporate-news/mediaCentre-lcbo-aeroplan4.jpg.transform/lcbo-image-desktop-2x/image.jpg');
+  background-position: center;
   background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #000;
   height: 500px;
-  background-size: cover;
-  margin-top: -100px;
+  margin-top: -200px;
 }
 
 .ae-content {
@@ -274,60 +212,28 @@ body, #__nuxt, .select select, .table {
   color: #000;
 }
 
-.subtitle, th {
-  font: normal 400 20px Open Sans;
-  color: #000;
-  margin-bottom: 0 !important;
-}
-
-.table th {
-  white-space: nowrap;
-  font-size: 18px;
-}
-
-.table th .icon {
-  width: 18px;
-  padding-left: 5px;
-  position: absolute;
-}
-
-.table td {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 150px;
-}
-
-.table td:not(:first-child) {
-  padding-top: 1rem;
-}
 
 .help {
-  color: #5f5f5f;
+  color: #707070;
   font-weight: 700;
-  margin-top: 0;
+  margin-top: -5px;
 }
 
 span.pts {
-  font-weight: 400;
-  font-size: 10px;
+  font-weight: 300;
+  font-size: .7em;
   margin-left: 3px;
+  vertical-align: super;
+}
+
+.title span.pts {
+  font-size: .4em;
 }
 
 .image img {
   display: block;
   height: 100%;
   width: auto;
-}
-
-.tag {
-  border-radius: 0;
-  font-weight: 400;
-}
-
-.tag.is-primary {
-  background: #005078;
-  color: #fff;
 }
 
 .button {
@@ -349,29 +255,21 @@ span.pts {
     padding: 30px;
   }
 
-  .table-container {
+  .list {
     margin-inline: -45px;
     max-width: 100vw;
     width: 100vw;
+    background-color: #fff;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .table thead {
-    display: none;
-  }
+}
 
-  .table td {
-    max-width: none;
-    border: 0;
-  }
-
-  .table tbody tr td:nth-child(n+2) {
-    display: none;
-  }
-
-  .field, .select, select {
-    width: 100%;
-  }
+.field, .select, select {
+  width: 100%;
+}
+.field:not(:last-child) {
+  margin-bottom: 0;
 }
 </style>

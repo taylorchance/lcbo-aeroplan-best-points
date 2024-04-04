@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ['~/assets/css/bulma.css'],
+  css: ['~/assets/css/bulma.css', '~/assets/css/bulma-list.css'],
 
   runtimeConfig: {
     public: {
