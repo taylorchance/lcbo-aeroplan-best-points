@@ -37,7 +37,6 @@ const categoryCounts = data.value.reduce((acc, product) => {
 
 const filters = Object
   .entries(categoryCounts)
-  .filter(entry => entry[1] > 2)
   .sort((a, b) => b[1] - a[1])
   .map(entry => entry[0])
 
@@ -235,13 +234,24 @@ body, #__nuxt {
 }
 
 /* darkmode overrides */
-body, #__nuxt, .select select {
+body, #__nuxt, .select select, .table {
   background-color: #fff;
-}
-
-.label {
   color: rgb(46, 51, 61);
 }
+
+.table th, .table td, .label, .tag {
+  color: rgb(46, 51, 61);
+}
+
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: rgb(249, 250, 250);
+}
+
+.tag {
+  background-color: rgb(243, 244, 246)
+}
+
+
 
 .top-banner-ae {
   background: url('https://www.aircanada.com/content/dam/aircanada/loyalty-content/images/hero-aeroplan.png') center center;
