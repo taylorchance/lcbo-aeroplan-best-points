@@ -170,23 +170,14 @@ body, #__nuxt {
 }
 
 /* darkmode overrides */
-body, #__nuxt, .select select, .table {
+body, #__nuxt, .select select {
   background-color: #fff;
   color: rgb(46, 51, 61);
 }
 
-.table th, .table td, .label, .tag {
+.label {
   color: rgb(46, 51, 61);
 }
-
-.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
-  background-color: rgb(249, 250, 250);
-}
-
-.tag {
-  background-color: rgb(243, 244, 246)
-}
-
 
 .top-banner-ae {
   background-image: url('https://www.lcbo.com/content/dam/lcbo/corporate-pages/about/media-centre/corporate-news/mediaCentre-lcbo-aeroplan4.jpg.transform/lcbo-image-desktop-2x/image.jpg');
