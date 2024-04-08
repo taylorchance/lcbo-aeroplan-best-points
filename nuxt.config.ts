@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       meta: [
         { name: 'description', content: 'LCBO Aeroplan points Booster' },
-        { name: 'google-adsense-account', content: 'ca-pub-846457148323619' },
+        { name: 'google-adsense-account', content: 'ca-pub-8464571483236197' },
       ]
     },
   },
