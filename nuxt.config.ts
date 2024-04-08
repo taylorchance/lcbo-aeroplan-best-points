@@ -3,7 +3,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'LCBO Aeroplan points maximizer',
+      title: 'LCBO Aeroplan points Booster',
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       meta: [
-        { name: 'description', content: 'LCBO Aeroplan points maximizer' },
+        { name: 'description', content: 'LCBO Aeroplan points Booster' },
         { name: 'google-adsense-account', content: 'ca-pub-846457148323619' },
       ]
     },

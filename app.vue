@@ -59,7 +59,7 @@ const formatDate = (string) => {
 
     <div v-else-if="data" class="container">
       <h1 class="title mb-0">
-        LCBO Aeroplan Points Maximizer
+        LCBO Aeroplan Points Booster
       </h1>
         
       <div class="level">
