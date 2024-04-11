@@ -58,8 +58,8 @@ const formatDate = (string) => {
     </div>
 
     <div v-else-if="data" class="container">
-      <h1 class="title mb-0">
-        LCBO Aeroplan Points Booster
+      <h1 class="title has-text-centered">
+        LCBO Aeroplan Points&nbsp;Booster
       </h1>
         
       <div class="level">
@@ -133,9 +133,11 @@ const formatDate = (string) => {
           <div class="list-item-content">
             <h3 class="list-item-title">{{ product.title }}</h3>
             <p class="list-item-description">
-              ${{ product.price }}
-              <span class="has-text-weight-light"> / {{ product.points }}</span>
-              <span class="pts">pts</span>
+              ${{ product.price }} / 
+              <span class="has-text-red">
+                {{ product.points }}
+                <span class="pts">pts</span>
+              </span>
             </p>
             <a :href="product.url" target="_blank" class="help">
               <span>View LCBO product</span>
@@ -211,6 +213,9 @@ body, #__nuxt, .select select {
   color: #000;
 }
 
+.has-text-red {
+  color: rgb(220 38 38);
+}
 
 .help {
   color: #707070;
@@ -219,14 +224,13 @@ body, #__nuxt, .select select {
 }
 
 span.pts {
-  font-weight: 300;
   font-size: .7em;
-  margin-left: 3px;
   vertical-align: super;
 }
 
 .title span.pts {
   font-size: .4em;
+  margin-left: 5px;
 }
 
 .image img {

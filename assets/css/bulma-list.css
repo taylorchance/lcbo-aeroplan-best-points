@@ -50,7 +50,6 @@
 }
 .list-item-image {
   flex-shrink: 0;
-  margin-right: 0.75em;
 }
 @media screen and (max-width: 768px) {
   .list-item-image {
