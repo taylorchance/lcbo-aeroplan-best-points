@@ -11,6 +11,11 @@ export default defineNuxtConfig({
       ],
       script: [
         { src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8464571483236197' },
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-GHD0MMW7FD' },
+        { children: `window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GHD0MMW7FD');` }
       ],
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
@@ -21,11 +26,5 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/bulma.css', '~/assets/css/bulma-list.css'],
-
-  runtimeConfig: {
-    public: {
-      gtagId: process.env.GOOGLE_ANALYTICS_ID,
-    }
-  },
   devtools: { enabled: true },
 })
