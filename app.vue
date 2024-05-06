@@ -8,7 +8,12 @@ const currentFilter = ref(null)
 const sortedProducts = computed(() => {
   let filteredProducts = data.value
   if (currentFilter.value) {
-    filteredProducts = data.value.filter(product => product.categories.includes(currentFilter.value))
+
+    if (currentFilter.value === 'On Sale + Bonus Points') {
+      filteredProducts = data.value.filter(product => product.price !== product.originalPrice)
+    } else {
+      filteredProducts = data.value.filter(product => product.categories.includes(currentFilter.value))
+    }
   }
 
   return filteredProducts.sort((a, b) => {
@@ -38,6 +43,7 @@ const filters = Object
   .entries(categoryCounts)
   .sort((a, b) => b[1] - a[1])
   .map(entry => entry[0])
+  filters.unshift('On Sale + Bonus Points')
 
 const formatDate = (string) => {
   const date = new Date(string)
@@ -62,7 +68,7 @@ const formatDate = (string) => {
         LCBO Aeroplan Points&nbsp;Booster
       </h1>
         
-      <div class="level">
+      <div class="level is-align-items-flex-end">
         <div class="field">
           <label class="label">Filters</label>
           <div class="control">
@@ -131,9 +137,19 @@ const formatDate = (string) => {
           </div>
 
           <div class="list-item-content">
+            <span v-if="product.originalPrice !== product.price" class="tag">
+              Bonus Points + Save ${{ Math.round((product.originalPrice - product.price) * 100) / 100 }}
+            </span>
             <h3 class="list-item-title">{{ product.title }}</h3>
             <p class="list-item-description">
-              ${{ product.price }} / 
+
+              <span v-if="product.originalPrice !== product.price">
+                <span>${{ product.price }}</span>
+                <span class="pts" style="text-decoration: line-through; font-weight: 100;">${{ product.originalPrice }}</span> /
+              </span>
+              <span v-else>
+                ${{ product.price }} / 
+              </span>
               <span class="has-text-red">
                 {{ product.points }}
                 <span class="pts">pts</span>
@@ -247,8 +263,14 @@ span.pts {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.25px;
-  padding: 12px 30px;
+  padding: 9px 30px;
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+  .button {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-width: 1023px) {
@@ -266,13 +288,20 @@ span.pts {
   }
 }
 
-@media only screen and (max-width: 768px) {
-}
-
 .field, .select, select {
   width: 100%;
 }
 .field:not(:last-child) {
   margin-bottom: 0;
+}
+
+.tag {
+  margin-right: auto;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: .12px;
+  color: #222;
+  background: #f0ccc9;
 }
 </style>

@@ -129,7 +129,8 @@ const fetchProducts = async () => {
       title: product.title,
       url: product.ClickUri,
       categories: formatCategories(product.raw.ec_category_filter[0]),
-      price: product.raw.ec_price,
+      originalPrice: product.raw.ec_price,
+      price: product.raw.ec_final_price,
       points: product.raw.loyalty_points,
       endDate: product.raw.loyalty_enddate,
     }
